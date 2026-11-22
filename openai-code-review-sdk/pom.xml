@@ -66,6 +66,10 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
+        <dependency>
+            <groupId>ai.z.openapi</groupId>
+            <artifactId>zai-sdk</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
@@ -121,6 +125,7 @@
         </testResources>
 
         <plugins>
+            <!-- 1. 用于指定普通 JAR 的主类（可选，被 repackage 覆盖前有用） -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -128,10 +133,18 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                             <mainClass>com.zdkk.middleware.sdk.OpenAiCodeReview</mainClass>
                         </manifest>
                     </archive>
+                </configuration>
+            </plugin>
+
+            <!-- 2. 核心：Spring Boot 打包插件，自动打包含所有依赖的 Fat Jar -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>com.zdkk.middleware.sdk.OpenAiCodeReview</mainClass>
                 </configuration>
             </plugin>
         </plugins>
