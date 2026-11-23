@@ -1,0 +1,5 @@
+spring:
+  config:
+    name: openai-code-review-sdk
+  profiles:
+    active: dev
