@@ -1,9 +1,5 @@
 package com.zdkk.middleware.sdk.infrastructure.openai;
 
-import org.springframework.ai.chat.prompt.Prompt;
-
-import java.net.MalformedURLException;
-
 /**
  * @author zdkk
  * @description
