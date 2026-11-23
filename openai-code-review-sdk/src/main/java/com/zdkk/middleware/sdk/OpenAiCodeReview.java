@@ -1,4 +1,7 @@
 package com.zdkk.middleware.sdk;
+import com.alibaba.fastjson2.JSON;
+import com.zdkk.middleware.sdk.domain.model.Message;
+import com.zdkk.middleware.sdk.types.util.WXAccessTokenUtils;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
@@ -9,9 +12,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Scanner;
 import java.util.UUID;
 
 /**
@@ -21,6 +27,7 @@ import java.util.UUID;
  */
 public class OpenAiCodeReview {
     private final ChatClient chatClient;
+    private String url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=%s";
 
     public OpenAiCodeReview(ChatClient chatClient) {
         this.chatClient = chatClient;
@@ -61,7 +68,49 @@ public class OpenAiCodeReview {
 
         // 2. llm 代码评审
         String log = llmCodeReview(diffCode.toString());
-        return writeLog(token, log);
+        // 3. 写入评审日志
+        String logUrl = writeLog(token, log);
+        // 4. 发送消息通知
+        return sendMessageNotification(logUrl);
+    }
+
+    private String sendMessageNotification(String logUrl) {
+        String urlString = String.format(url, WXAccessTokenUtils.getAccessToken());
+        Message message = new Message();
+        message.put("project", "test-project");
+        message.put("review", "feat: 添加新功能");
+        message.setUrl(logUrl);
+
+        String jsonBody = JSON.toJSONString(message);
+        return sendPostRequest(urlString, jsonBody);
+    }
+
+    private String sendPostRequest(String urlString, String jsonBody) {
+        HttpURLConnection connection = null;
+        try {
+            URL url = new URL(urlString);
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Content-Type", "application/json; utf-8");
+            connection.setRequestProperty("Accept", "application/json");
+            connection.setDoOutput(true);
+
+            try (OutputStream os = connection.getOutputStream()) {
+                byte[] input = jsonBody.getBytes(StandardCharsets.UTF_8);
+                os.write(input, 0, input.length);
+            }
+
+            try (Scanner sc = new Scanner(connection.getInputStream(), StandardCharsets.UTF_8)) {
+                return sc.useDelimiter("\\A").next();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Error: " + e.getMessage();
+        } finally {
+            if (connection != null) {
+                connection.disconnect();
+            }
+        }
     }
 
     private String writeLog(String token, String log) throws GitAPIException {
@@ -77,7 +126,7 @@ public class OpenAiCodeReview {
         if (!dateFolder.exists()) {
             dateFolder.mkdirs();
         }
-        File logFile = new File(dateFolder, UUID.randomUUID().toString() + "-log.txt");
+        File logFile = new File(dateFolder, UUID.randomUUID().toString() + "-log.md");
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(logFile))) {
             bufferedWriter.write(log);
         } catch (IOException e) {
