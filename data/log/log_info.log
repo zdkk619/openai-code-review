@@ -1,0 +1,48 @@
+26-11-23.16:23:58.592 [main            ] INFO  Application            - Starting Application using Java 17.0.21.0.3 with PID 29888 (D:\code\background-end\middleware\openai-code-review\openai-code-review-test\target\classes started by 76513 in D:\code\background-end\middleware\openai-code-review)
+26-11-23.16:23:58.595 [main            ] INFO  Application            - The following 1 profile is active: "dev"
+26-11-23.16:23:59.077 [main            ] WARN  AnnotationConfigApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'codeReviewRunner' defined in file [D:\code\background-end\middleware\openai-code-review\openai-code-review-test\target\classes\com\zdkk\middleware\test\CodeReviewRunner.class]: Unsatisfied dependency expressed through constructor parameter 0: No qualifying bean of type 'org.springframework.ai.chat.client.ChatClient' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
+26-11-23.16:23:59.080 [main            ] INFO  ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+26-11-23.16:23:59.091 [main            ] ERROR LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Parameter 0 of constructor in com.zdkk.middleware.test.CodeReviewRunner required a bean of type 'org.springframework.ai.chat.client.ChatClient' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'org.springframework.ai.chat.client.ChatClient' in your configuration.
+
+26-11-23.16:26:23.210 [main            ] INFO  Application            - Starting Application using Java 17.0.21.0.3 with PID 30008 (D:\code\background-end\middleware\openai-code-review\openai-code-review-test\target\classes started by 76513 in D:\code\background-end\middleware\openai-code-review)
+26-11-23.16:26:23.211 [main            ] INFO  Application            - The following 1 profile is active: "dev"
+26-11-23.16:26:23.728 [main            ] WARN  AnnotationConfigApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'codeReviewConfig': Unsatisfied dependency expressed through field 'chatClient': No qualifying bean of type 'org.springframework.ai.chat.client.ChatClient' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+26-11-23.16:26:23.731 [main            ] INFO  ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+26-11-23.16:26:23.740 [main            ] ERROR LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field chatClient in com.zdkk.middleware.config.CodeReviewConfig required a bean of type 'org.springframework.ai.chat.client.ChatClient' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'org.springframework.ai.chat.client.ChatClient' in your configuration.
+
+26-11-23.16:28:24.685 [main            ] INFO  Application            - Starting Application using Java 17.0.21.0.3 with PID 48224 (D:\code\background-end\middleware\openai-code-review\openai-code-review-test\target\classes started by 76513 in D:\code\background-end\middleware\openai-code-review)
+26-11-23.16:28:24.688 [main            ] INFO  Application            - The following 1 profile is active: "dev"
+26-11-23.16:28:26.008 [main            ] INFO  Application            - Started Application in 1.803 seconds (process running for 2.24)

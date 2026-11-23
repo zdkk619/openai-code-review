@@ -15,8 +15,8 @@ import org.springframework.stereotype.Component;
 public class CodeReviewRunner implements ApplicationRunner {
     private final OpenAiCodeReview openAiCodeReview;
 
-    public CodeReviewRunner(ChatClient chatClient) {
-        this.openAiCodeReview = new OpenAiCodeReview(chatClient);
+    public CodeReviewRunner(OpenAiCodeReview openAiCodeReview) {
+        this.openAiCodeReview = openAiCodeReview;
     }
 
     @Override
