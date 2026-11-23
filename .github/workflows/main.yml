@@ -2,9 +2,11 @@ name: Run Java Git Diff By Local
 
 on:
   push:
-    branches: ['*']
+    branches:
+      - main-close
   pull_request:
-    branches: ['*']
+    branches:
+      - main-close
 
 jobs:
   build-and-run:
