@@ -29,4 +29,4 @@ jobs:
       - name: Run Java code
         env:
           ZHIPU_API_KEY: ${{ secrets.ZHIPU_API_KEY }}
-        run: java -jar openai-code-review-sdk/target/openai-code-review-sdk-1.0.jar
+        run: java -jar openai-code-review-test/target/openai-code-review-test-1.0.jar
