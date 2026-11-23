@@ -87,6 +87,6 @@ public class OpenAiCodeReview {
         git.commit().setMessage("Add log file").call();
         git.push().setCredentialsProvider(new UsernamePasswordCredentialsProvider(token, "")).call();
         git.close();
-        return "https://github.com/zdkk619/openai-code-review-log/blob/main/" + dateFolderName + "/" + logFile.getName();
+        return "https://github.com/zdkk619/openai-code-review-log/blob/master/" + dateFolderName + "/" + logFile.getName();
     }
 }
