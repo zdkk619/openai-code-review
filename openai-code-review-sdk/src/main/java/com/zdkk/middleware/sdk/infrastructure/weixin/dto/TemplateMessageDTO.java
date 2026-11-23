@@ -9,13 +9,13 @@ import java.util.Map;
  * @create 2026-11-23 18:09
  */
 public class TemplateMessageDTO {
-    private final String toUser;
+    private final String touser;
     private final String template_id;
     private String url;
     private Map<String, Map<String, String>> data = new HashMap<>();
 
-    public TemplateMessageDTO(String toUser, String template_id) {
-        this.toUser = toUser;
+    public TemplateMessageDTO(String touser, String template_id) {
+        this.touser = touser;
         this.template_id = template_id;
     }
 
@@ -58,8 +58,8 @@ public class TemplateMessageDTO {
         }
     }
 
-    public String getToUser() {
-        return toUser;
+    public String getTouser() {
+        return touser;
     }
 
     public String getTemplate_id() {
