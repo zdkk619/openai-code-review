@@ -17,9 +17,20 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <slf4j.version>2.0.20</slf4j.version>
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
 
         <!-- Source: https://mvnrepository.com/artifact/com.alibaba.fastjson2/fastjson2 -->
         <dependency>
@@ -52,18 +63,58 @@
                     <include>**/*.txt</include>
                 </includes>
             </resource>
-            <!-- 二进制/无需替换的资源单独放行，避免 filtering 损坏文件 -->
             <resource>
-                <directory>src/main/resources</directory>
-                <filtering>false</filtering>
-                <excludes>
-                    <exclude>**/*.properties</exclude>
-                    <exclude>**/*.yml</exclude>
-                    <exclude>**/*.yaml</exclude>
-                    <exclude>**/*.xml</exclude>
-                    <exclude>**/*.txt</exclude>
-                </excludes>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/*.properties</include>
+                    <include>**/*.yml</include>
+                    <include>**/*.yaml</include>
+                    <include>**/*.xml</include>
+                    <include>**/*.txt</include>
+                </includes>
             </resource>
         </resources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.4.1</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                            <mainClass>com.zdkk.middleware.sdk.OpenAiCodeReview</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.4.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <artifactSet>
+                        <includes>
+                            <include>com.alibaba.fastjson2:fastjson2:jar:</include>
+                            <include>org.slf4j:slf4j-api:jar:</include>
+                            <include>org.slf4j:slf4j-simple:jar:</include>
+                            <include>org.eclipse.jgit:org.eclipse.jgit:</include>
+                            <include>org.springframework.ai:spring-ai-starter-model-openai:</include>
+                        </includes>
+                    </artifactSet>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 </project>

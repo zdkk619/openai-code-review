@@ -13,21 +13,17 @@ import java.net.URL;
  * @create 2026-11-23 17:32
  */
 public class WXAccessTokenUtils {
-    private static final String APPID = "wx151ff417f0fd3390";
-    private static final String SECRET = "861639ef46b5fc788a8bc8e6c26aa07f";
     private static final String GRANT_TYPE = "client_credential";
     private static final String URL_TEMPLATE = "https://api.weixin.qq.com/cgi-bin/token?grant_type=%s&appid=%s&secret=%s";
 
-    public static String getAccessToken() {
+    public static String getAccessToken(String appId, String appSecret) {
         try {
-            String urlString = String.format(URL_TEMPLATE, GRANT_TYPE, APPID, SECRET);
+            String urlString = String.format(URL_TEMPLATE, GRANT_TYPE, appId, appSecret);
             URL url = new URL(urlString);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
 
             int responseCode = connection.getResponseCode();
-            System.out.println("Response Code: " + responseCode);
-
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 String inputLine;
@@ -38,19 +34,13 @@ public class WXAccessTokenUtils {
                 }
                 in.close();
 
-                // Print the response
-                System.out.println("Response: " + response.toString());
-
                 Token token = JSON.parseObject(response.toString(), Token.class);
-
                 return token.getAccess_token();
             } else {
-                System.out.println("GET request failed， responseCode: " + responseCode);
-                return null;
+                throw new RuntimeException("WeiXin: Failed to get access token, response code: " + responseCode);
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            throw new RuntimeException("WeiXin: Failed to get access token", e);
         }
     }
 
